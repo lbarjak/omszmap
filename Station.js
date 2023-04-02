@@ -1,13 +1,18 @@
 export default class Station {
 
-    constructor() {
-        //this.draw()
+    constructor(stationParams, drawing) {
+        this.x = stationParams.x
+        this.y = stationParams.y
+        this.sn = stationParams.sn
+        this.name = stationParams.name
+        this.drawing = drawing
+        this.circle
+        this.draw()
     }
 
     draw = () => {
-        //...
+        this.drawCircle()
         this.text()
-        this.drawStation()
     }
 
     isPointInStation = (pointerX, pointerY) => {
@@ -17,11 +22,14 @@ export default class Station {
         return false
     }
 
-    drawStation = () => {
-        let x
-        let y
-        this.station = this.drawing.circle()
-        this.station.data('sn', this.sn)
+    drawCircle = () => {
+        this.circle = this.drawing.circle(10).move(this.x, this.y)
+        this.circle.attr({
+            stroke: 'red',
+            'stroke-width': 2,
+            'fill': 'red'
+        })
+        this.circle.data('sn', this.sn)
     }
 
     text = () => {
