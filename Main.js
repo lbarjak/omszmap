@@ -1,4 +1,6 @@
-import { stations } from './stations.js'
+import Stations from './Stations.js'
+let stations = new Stations().stations
+console.log(Stations.proba)
 
 export default class Main {
 
@@ -6,16 +8,15 @@ export default class Main {
         window.onresize = this.reload
         this.width = window.innerWidth
         this.height = window.innerHeight
+
         this.drawing = SVG()
             .addTo('#svgs')
             .size(this.width, this.height)
         this.rect = this.drawing
             .rect(this.width, this.height)
             .attr({ fill: 'lightgray' })
-        //.stroke({ color: '#f06', opacity: 0.6, width: 5 })
-        console.log(this.rect.height())
 
-        //this.main()
+        this.main()
         this.map()
     }
 
@@ -55,6 +56,7 @@ export default class Main {
             y = (this.height - mapHeight) / 2
         }
 
-        let map = this.drawing.image('./HU_counties_blank-teszt.svg').size(mapWidth, mapHeight).x(x).y(y)
+        let map = this.drawing.image('./HU_counties_blank.svg').size(mapWidth, mapHeight).x(x).y(y)
+        map.opacity(0.4)
     }
 }
