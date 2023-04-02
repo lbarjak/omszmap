@@ -1,5 +1,6 @@
-export default class Stations {
-    stations =
+export default class Data {
+
+    data =
         {
             589: ["Agárd", 47.1900, 18.5836],
             356: ["Ágerdőmajor", 47.7628, 22.4199],

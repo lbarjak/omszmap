@@ -1,6 +1,6 @@
-import Stations from './Stations.js'
-let stations = new Stations().stations
-console.log(Stations.proba)
+import Data from './Data.js'
+import Station from './Station.js'
+let data = new Data().data
 
 export default class Main {
 
@@ -16,8 +16,10 @@ export default class Main {
             .rect(this.width, this.height)
             .attr({ fill: 'lightgray' })
 
-        this.main()
+        this.stations = []
+
         this.map()
+        this.drawStations()
     }
 
     reload = () => {
@@ -28,15 +30,25 @@ export default class Main {
             .catch((error) => console.warn(error))
     }
 
-    main() {
-        let Lan0 = 45.8
-        let Lon0 = 16.083333
-        let keys = Object.keys(stations)
+    drawStations() {
+        let Lat0 = 45.8
+        let Long0 = 16.083333
+        let keys = Object.keys(data)
         let value
         for (let key of keys) {
-            value = stations[key]
-            console.log(key + " " + value[0] + " " + (value[1] - Lan0) + " " + (value[2] - Lon0))
+            value = data[key]
+            console.log(key + " " + value[0] + " " + (value[1] - Lat0) + " " + (value[2] - Long0))
         }
+        let stationParams = {
+            Lat: 0,
+            Long: 0,
+            name: 0,
+            sn: 0,
+        }
+        this.stations[stationParams.sn] = new Station(
+            stationParams,
+            this.drawing
+        )
     }
 
     map() {
