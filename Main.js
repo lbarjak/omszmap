@@ -16,14 +16,15 @@ export default class Main {
             .rect(this.width, this.height)
             .attr({ fill: 'lightgray' })
 
-        let mapHeight
-        let mapWidth
-        let xMap
-        let yMap
+        this.mapHeight
+        this.mapWidth
+        this.xMap
+        this.yMap
         this.stations = {}
 
         this.map()
         this.drawStations()
+        this.events()
     }
 
     reload = () => {
@@ -84,5 +85,49 @@ export default class Main {
             )
         }
         console.log(this.stations)
+    }
+
+    showParams() {
+        console.log("Ok")
+    }
+
+
+    events() {
+        let isMouseDown
+        let currentStationSn
+
+        let inside = (x, y) => {
+            return (
+                x >= 0 &&
+                x < window.innerWidth &&
+                y >= 0 &&
+                y < window.innerHeight
+            )
+        }
+
+        let handleMouse = (e) => {
+
+            e.preventDefault()
+            if (inside(e.clientX, e.clientY) && e.target.tagName !== 'BODY') {
+                currentStationSn = e.target.attributes['data-sn'].value
+                console.log(currentStationSn)
+            } else {
+                isMouseDown = false
+            }
+            if (e.type === 'mousedown') isMouseDown = true
+            if (e.type === 'mouseup' || e.type === 'mouseleave')
+                isMouseDown = false
+            if (currentStationSn && isMouseDown) {
+                this.showParams(true, currentStaionSn)
+            }
+        }
+
+        document.addEventListener('mouseleave', handleMouse)
+
+        for (let station of Object.entries(this.stations)) {
+            console.log(station)
+            //this.stations.forEach((station) => {
+            station[1].circle.on(['mousedown', 'mouseup'], handleMouse, false)
+        }
     }
 }
