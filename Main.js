@@ -72,7 +72,7 @@ export default class Main {
             value = data[key]
             stationParams = {
                 x: this.xMap + this.mapWidth * (value[2] - Long0) / LongSize,
-                y: this.mapHeight - (this.mapHeight * (value[1] - Lat0) / LatSize),
+                y: this.mapHeight - (this.mapHeight * (value[1] - Lat0) / LatSize) + this.yMap - 10,
                 name: value[0],
                 sn: key
             }
