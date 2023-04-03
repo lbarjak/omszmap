@@ -18,6 +18,8 @@ export default class Main {
 
         let mapHeight
         let mapWidth
+        let xMap
+        let yMap
         this.stations = {}
 
         this.map()
@@ -30,6 +32,29 @@ export default class Main {
         })
             .then(() => location.reload())
             .catch((error) => console.warn(error))
+    }
+
+    map() {
+        let ratioSvg = this.width / this.height
+        const ratioHu = 1.625
+
+        if (ratioSvg >= ratioHu) {
+            this.mapHeight = this.height
+            this.mapWidth = this.mapHeight * ratioHu
+            this.xMap = (this.width - this.mapWidth) / 2
+            this.yMap = 0
+        } else {
+            this.mapWidth = this.width
+            this.mapHeight = this.mapWidth / ratioHu
+            this.yMap = (this.height - this.mapHeight) / 2
+            this.xMap = 0
+        }
+
+        let map = this.drawing.image('./HU_counties_blank.svg')
+            .size(this.mapWidth, this.mapHeight)
+            .x(this.xMap)
+            .y(this.yMap)
+        map.opacity(0.4)
     }
 
     drawStations() {
@@ -47,35 +72,17 @@ export default class Main {
             //console.log(key + " " + value[0] + " " + (value[1] - Lat0) + " " + (value[2] - Long0))
 
             stationParams = {
-                x: this.mapWidth * (value[2] - Long0) / LongSize,
-                y: this.mapHeight * (value[1] - Lat0) / LatSize,
+                x: this.xMap + this.mapWidth * (value[2] - Long0) / LongSize,
+                y: this.mapHeight - (this.mapHeight * (value[1] - Lat0) / LatSize),
                 name: value[0],
                 sn: key
             }
+            console.log(">" + stationParams.y)
             this.stations[stationParams.sn] = new Station(
                 stationParams,
                 this.drawing
             )
         }
         console.log(this.stations)
-    }
-
-    map() {
-        let ratioSvg = this.width / this.height
-        const ratioHu = 1.625
-        let x = 0
-        let y = 0
-        if (ratioSvg >= ratioHu) {
-            this.mapHeight = this.height
-            this.mapWidth = this.mapHeight * ratioHu
-            x = (this.width - this.mapWidth) / 2
-        } else {
-            this.mapWidth = this.width
-            this.mapHeight = this.mapWidth / ratioHu
-            y = (this.height - this.mapHeight) / 2
-        }
-
-        let map = this.drawing.image('./HU_counties_blank.svg').size(this.mapWidth, this.mapHeight).x(x).y(y)
-        map.opacity(0.4)
     }
 }

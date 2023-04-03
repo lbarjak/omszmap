@@ -25,8 +25,8 @@ export default class Station {
     drawCircle = () => {
         this.circle = this.drawing.circle(10).move(this.x, this.y)
         this.circle.attr({
-            stroke: 'red',
-            'stroke-width': 2,
+            stroke: 'black',
+            'stroke-width': 1,
             'fill': 'red'
         })
         this.circle.data('sn', this.sn)
