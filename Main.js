@@ -51,7 +51,7 @@ export default class Main {
             this.xMap = 0
         }
 
-        let map = this.drawing.image('./HU_counties_blank.svg')
+        let map = this.drawing.image('Hu-vasut-mod.svg')
             .size(this.mapWidth, this.mapHeight)
             .x(this.xMap)
             .y(this.yMap)
@@ -70,27 +70,25 @@ export default class Main {
         let stationParams
         for (let key of keys) {
             value = data[key]
-            //console.log(key + " " + value[0] + " " + (value[1] - Lat0) + " " + (value[2] - Long0))
-
             stationParams = {
                 x: this.xMap + this.mapWidth * (value[2] - Long0) / LongSize,
                 y: this.mapHeight - (this.mapHeight * (value[1] - Lat0) / LatSize),
                 name: value[0],
                 sn: key
             }
-            console.log(">" + stationParams.y)
             this.stations[stationParams.sn] = new Station(
                 stationParams,
                 this.drawing
             )
         }
-        console.log(this.stations)
     }
 
-    showParams() {
-        console.log("Ok")
+    showParams(currentStationSn) {
+        alert(data[currentStationSn][0] + ", "
+            + currentStationSn + ", "
+            + data[currentStationSn][1] + ", "
+            + data[currentStationSn][2])
     }
-
 
     events() {
         let isMouseDown
@@ -110,7 +108,6 @@ export default class Main {
             e.preventDefault()
             if (inside(e.clientX, e.clientY) && e.target.tagName !== 'BODY') {
                 currentStationSn = e.target.attributes['data-sn'].value
-                console.log(currentStationSn)
             } else {
                 isMouseDown = false
             }
@@ -118,16 +115,14 @@ export default class Main {
             if (e.type === 'mouseup' || e.type === 'mouseleave')
                 isMouseDown = false
             if (currentStationSn && isMouseDown) {
-                this.showParams(true, currentStaionSn)
+                this.showParams(currentStationSn)
             }
         }
 
         document.addEventListener('mouseleave', handleMouse)
 
         for (let station of Object.entries(this.stations)) {
-            console.log(station)
-            //this.stations.forEach((station) => {
-            station[1].circle.on(['mousedown', 'mouseup'], handleMouse, false)
+            station[1].circle.on('mousedown', handleMouse, false)
         }
     }
 }
