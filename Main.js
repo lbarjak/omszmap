@@ -56,6 +56,9 @@ export default class Main {
             .x(this.xMap)
             .y(this.yMap)
         map.opacity(0.4)
+        this.drawing.text("OMSZ állomások neve, száma, koordinátái \n (Kattints a pontokra)")
+            .x(this.xMap + this.mapWidth / 4)
+            .y(this.mapHeight / 20)
     }
 
     drawStations() {
